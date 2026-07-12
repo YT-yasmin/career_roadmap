@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yasmin Abdelazeiz — Engineering Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --bg:#eee8dc;
+    --panel:#f7f2e8;
+    --panel-2:#e6ddcc;
+    --line:#cfc3af;
+    --line-strong:#9f927e;
+    --ink:#2d3028;
+    --ink-2:#4f5147;
+    --muted:#787567;
+    --teal:#536f66;
+    --gold:#b28a52;
+    --terracotta:#a65f46;
+    --violet:#6b6475;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:#eee8dc; color:var(--ink); font-family:'IBM Plex Sans', sans-serif; -webkit-font-smoothing:antialiased; }
+  ::selection{background:#d9ecea; color:var(--ink);}
+  a{color:var(--teal);}
+
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px 100px;}
+
+  header{ max-width:960px; margin:0 auto; padding:48px 24px 34px; border-bottom:2px solid var(--ink); position:relative; }
+  .brand{ display:flex; align-items:center; gap:10px; margin-bottom:34px; }
+  .brand-mark{ display:flex; gap:2px; }
+  .brand-mark span{ width:0; height:0; border-top:9px solid transparent; border-bottom:9px solid transparent; border-left:14px solid var(--terracotta); }
+  .brand-mark span:last-child{ border-left-color:var(--teal); }
+  .brand-name{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px; letter-spacing:.01em; }
+
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.18em; color:var(--terracotta); text-transform:uppercase; display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .eyebrow::before{ content:""; width:22px; height:2px; background:var(--terracotta); }
+  h1{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(34px, 5.6vw, 58px); line-height:1.03; margin:0 0 14px; letter-spacing:-0.01em; text-transform:uppercase; }
+  h1 .thin{ color:var(--teal); }
+  .subtitle{ font-size:16px; color:var(--muted); max-width:580px; line-height:1.55; margin:0 0 22px; }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:18px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted); }
+  .meta-row span{display:flex; align-items:center; gap:7px;}
+  .meta-row span::before{content:"—"; color:var(--line-strong);}
+
+  .console{ margin-top:32px; background:var(--panel); border:1.5px solid var(--ink); border-radius:var(--radius); overflow:hidden; }
+  .console-head{ display:flex; align-items:center; gap:10px; padding:9px 14px; background:var(--ink); font-family:'IBM Plex Mono', monospace; font-size:11px; color:#fff; letter-spacing:.08em; }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--terracotta);}
+  .console-body{padding:16px 14px 14px;}
+  .query-row{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .query-row .prompt{ font-family:'IBM Plex Mono', monospace; color:var(--teal); font-size:14px; font-weight:600; }
+  #query{ flex:1; background:transparent; border:none; outline:none; color:var(--ink); font-family:'IBM Plex Mono', monospace; font-size:14px; }
+  #query::placeholder{color:#9aa3a6;}
+  .result-count{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted); white-space:nowrap; }
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; padding:6px 12px; border-radius:100px;
+    border:1.5px solid var(--line-strong); background:transparent; color:var(--ink-2); cursor:pointer;
+    letter-spacing:.03em; transition:all .15s ease; display:flex; align-items:center; gap:7px;
+  }
+  .chip .sw{width:7px; height:7px; border-radius:50%; flex:none;}
+  .chip[data-cat="degree"] .sw{background:#2b7a78;}
+  .chip[data-cat="coursework"] .sw{background:#4e7487;}
+  .chip[data-cat="conference"] .sw{background:#e17b60;}
+  .chip:hover{border-color:var(--teal);}
+  .chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .console-note{ margin-top:12px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#8b958f; }
+
+  .section-label{
+    max-width:960px; margin:56px auto 8px; padding:0 24px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:10px;
+  }
+  .section-label::after{content:""; flex:1; height:1.5px; background:var(--line-strong);}
+  .section-label .soft{font-weight:400; text-transform:none; letter-spacing:0;}
+
+  .drive3d{ position:relative; }
+  .stage3d{
+    position:sticky; top:0; height:100vh; overflow:hidden; isolation:isolate;
+    background:
+      radial-gradient(circle at 72% 18%, rgba(72,151,171,.24), transparent 28%),
+      radial-gradient(circle at 20% 30%, rgba(198,124,105,.15), transparent 24%),
+      linear-gradient(180deg, #061522 0%, #102f43 43%, #365b68 68%, #b7a889 100%);
+  }
+  .stage3d::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.62;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.95) 0 1px, transparent 1.5px),
+      radial-gradient(circle, rgba(184,224,229,.75) 0 1px, transparent 1.6px),
+      radial-gradient(ellipse at 60% 24%, rgba(112,178,191,.15), transparent 37%);
+    background-size:73px 73px, 121px 121px, 100% 100%;
+    background-position:0 0, 31px 47px, 0 0;
+  }
+  .stage3d::after{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg, transparent 0 42%, rgba(7,25,36,.08) 58%, rgba(239,225,196,.18) 100%);
+  }
+  #canvas3d{ position:absolute; inset:0; z-index:1; width:100%; height:100%; display:block; touch-action:pan-y; }
+
+  .hud-panel{
+    position:absolute; right:22px; top:50%; transform:translateY(-50%);
+    width:340px; max-width:calc(100vw - 44px);
+    background:rgba(255,255,255,.94); backdrop-filter:blur(6px);
+    border:1.5px solid var(--ink); border-left:5px solid var(--terracotta);
+    border-radius:var(--radius); padding:20px 22px; max-height:66vh; overflow:auto;
+    box-shadow:0 24px 48px -20px rgba(23,42,58,.28);
+    transition:opacity .2s ease, transform .2s ease; z-index:5;
+  }
+  .hud-panel.fade{ opacity:0; transform:translateY(-50%) translateX(8px); }
+  .hud-panel[data-cat="degree"]{ border-left-color:#2b7a78; }
+  .hud-panel[data-cat="coursework"]{ border-left-color:#4e7487; }
+  .hud-panel[data-cat="conference"]{ border-left-color:#e17b60; }
+  .hud-panel[data-cat="research"]{ border-left-color:var(--violet); }
+  .hud-panel[data-cat="industry"]{ border-left-color:var(--terracotta); }
+  .hud-panel[data-cat="social"]{ border-left-color:var(--gold); }
+  .hud-top-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .hud-index{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--muted); letter-spacing:.1em; }
+  .hud-cat{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:3px 9px; border-radius:100px; border:1.3px solid var(--ink); color:var(--ink); }
+  .hud-chapter{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--terracotta); letter-spacing:.06em; margin-bottom:8px; text-transform:uppercase; }
+  .hud-date{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--terracotta); margin-bottom:6px; font-weight:600; }
+  .hud-title{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:19px; line-height:1.28; margin-bottom:4px; color:var(--ink); }
+  .hud-org{ font-size:13px; color:var(--muted); margin-bottom:12px; }
+  .hud-panel ul{ margin:0 0 12px; padding-left:18px; font-size:13.5px; line-height:1.6; color:#304452; }
+  .hud-panel li{margin-bottom:5px;}
+  .tags{display:flex; flex-wrap:wrap; gap:6px;}
+  .tag{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; padding:3px 9px; background:var(--panel-2); border:1px solid var(--line-strong); border-radius:100px; color:var(--ink-2); }
+
+  .stage-progress{ position:absolute; left:22px; right:22px; bottom:20px; height:4px; background:rgba(51,43,31,.15); border-radius:2px; overflow:hidden; z-index:5;}
+  .stage-progress-fill{ height:100%; width:0%; background:var(--terracotta); transition:width .1s linear; }
+
+  .stage-dots{ position:absolute; left:22px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:6px; z-index:5; }
+  .stage-dot{ width:9px; height:9px; border-radius:50%; background:#fff; border:1.5px solid var(--ink); cursor:pointer; padding:0; transition:all .2s ease; }
+  .stage-dot.active{ background:var(--terracotta); border-color:var(--terracotta); transform:scale(1.3); }
+  .stage-dot.dim{ opacity:.25; }
+
+  .chapter-badge{position:absolute;left:22px;top:24px;z-index:6;background:rgba(252,251,247,.94);border:1.5px solid var(--ink);border-radius:999px;padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 25px -18px rgba(23,42,58,.45)}
+  .stage-hint{
+    position:absolute; top:24px; left:50%; transform:translateX(-50%);
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink); background:#fff; border:1.3px solid var(--ink); border-radius:100px; padding:6px 14px;
+    display:flex; align-items:center; gap:8px; opacity:1; transition:opacity .4s ease; z-index:5;
+  }
+  .stage-hint.hidden{opacity:0;}
+  .stage-hint::after{ content:"↓"; animation:bob 1.2s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(4px);} }
+
+  .steer-controls{ position:absolute; bottom:56px; left:50%; transform:translateX(-50%); display:flex; gap:14px; z-index:6; }
+  .steer-btn{
+    width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.92); border:1.5px solid var(--ink);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none;
+    box-shadow:0 8px 18px -8px rgba(23,42,58,.35); transition:transform .12s ease, background .12s ease;
+    font-family:'Space Grotesk', sans-serif; font-size:20px; color:var(--ink);
+  }
+  .steer-btn:active, .steer-btn.pressed{ transform:scale(.92); background:var(--terracotta); color:#fff; border-color:var(--terracotta); }
+
+  .log-list{ max-width:960px; margin:20px auto 0; padding:0 24px; }
+  .log-item{ background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--terracotta); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px; }
+  .log-item[data-cat="degree"]{border-left-color:#2b7a78;}
+  .log-item[data-cat="coursework"]{border-left-color:#4e7487;}
+  .log-item[data-cat="conference"]{border-left-color:#e17b60;}
+  .log-item[data-cat="research"]{border-left-color:var(--violet);}
+  .log-item[data-cat="industry"]{border-left-color:var(--terracotta);}
+  .log-item[data-cat="social"]{border-left-color:var(--gold);}
+  .log-top{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; }
+  .log-date{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--terracotta); font-weight:600; }
+  .log-title{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:14.5px; margin-top:2px; color:var(--ink);}
+  .log-org{ font-size:12.5px; color:var(--muted); margin-top:1px; margin-bottom:6px;}
+  .log-chapter{ font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+
+  .empty-state{ display:none; padding:40px 0; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace; font-size:13px; }
+  .empty-state.show{display:block;}
+
+  .matrix-grid{
+    max-width:960px; margin:0 auto; padding:0 24px;
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5px;
+    background:var(--line-strong); border:1.5px solid var(--ink); border-radius:var(--radius); overflow:hidden;
+  }
+  .matrix-cell{ background:var(--panel); padding:16px 18px; }
+  .matrix-cell h4{ margin:0 0 10px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--terracotta); }
+  .matrix-cell p{ margin:0; font-size:13px; color:#304452; line-height:1.6; }
+
+  footer{
+    max-width:960px; margin:64px auto 0; padding:20px 24px 0; border-top:2px solid var(--ink);
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  .hierarchy-panel{position:absolute;left:22px;top:22px;z-index:7;width:min(330px,calc(100vw - 44px));background:rgba(10,30,43,.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:13px 15px;color:#f7faf9;box-shadow:0 14px 35px rgba(0,0,0,.18)}
+  .hierarchy-kicker{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#9fc7c4;margin-bottom:3px}
+  .hierarchy-city{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;line-height:1.15}
+  .hierarchy-neighborhood{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:6px;color:#e9c58c;text-transform:uppercase;letter-spacing:.08em}
+  .route-bars{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:7;width:min(760px,calc(100vw - 44px));background:rgba(10,30,43,.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px;color:#eef7f6}
+  .city-route,.neighborhood-route{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;text-transform:uppercase}
+  .city-route{font-size:10px;letter-spacing:.11em}.neighborhood-route{font-size:9px;color:#b9c9cc;margin-top:7px}
+  .route-node{opacity:.42;transition:.2s;cursor:pointer;padding:3px 7px;border-radius:999px;border:1px solid transparent}.route-node:hover{opacity:1;border-color:rgba(255,255,255,.35)}.route-node.active{opacity:1;color:#f1c17f;font-weight:700}.route-sep{opacity:.25}
+  .flight-mode .hud-panel{opacity:0!important;pointer-events:none}.flight-mode .hierarchy-neighborhood{display:none}.flight-mode .hierarchy-city{color:#f1c17f}
+  .flag-chip{font-size:18px;line-height:1;vertical-align:-2px;margin-right:6px}
+  @media (max-width:720px){
+    .hud-panel{ width:calc(100vw - 32px); right:16px; top:auto; bottom:74px; transform:none; max-height:34vh; }
+    .hud-panel.fade{ transform:translateX(8px); }
+    .stage-dots{ display:none; }
+    .stage-progress{ left:16px; right:16px; bottom:16px; }
+    .steer-controls{ bottom:auto; top:110px; }
+    .hierarchy-panel{left:16px;top:16px}.route-bars{bottom:16px;padding:8px 10px}.city-route{font-size:9px}.neighborhood-route{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="brand-mark"><span></span><span></span></div>
+      <span class="brand-name">Y. ABDELAZEIZ</span>
+    </div>
+    <div class="eyebrow">Career Roadmap — Rev. 2026.07 · Drivable Detours</div>
+    <h1>Engineering<br><span class="thin">Roadmap</span></h1>
+    <p class="subtitle">MSc Mechanical Engineering candidate in the High-Tech Engineering track at TU Delft. Three education cities connected by one main road — degree, coursework, industry, research and conference landmarks along the way. Steer with ← → (or the buttons) as you scroll.</p>
+    <div class="meta-row">
+      <span>Delft, NL</span>
+      <span>yyasminmansour@tudelft.nl</span>
+      <span>+20 1007279904</span>
+      <span><a href="#">LinkedIn: Yasmin Abdelazeiz</a></span>
+    </div>
+
+    <div class="console">
+      <div class="console-head"><span class="dot"></span> QUERY CONSOLE — search the route</div>
+      <div class="console-body">
+        <div class="query-row">
+          <span class="prompt">&gt;</span>
+          <input id="query" type="text" placeholder="search e.g. 'Abaqus', 'graphene', 'MIT', 'fatigue'…" autocomplete="off">
+          <span class="result-count" id="count">16 / 16</span>
+        </div>
+        <div class="chips" id="chips">
+          <button class="chip active" data-cat="all"><span class="sw"></span>All</button>
+          <button class="chip" data-cat="degree"><span class="sw"></span>Degree</button>
+          <button class="chip" data-cat="coursework"><span class="sw"></span>Coursework</button>
+          <button class="chip" data-cat="industry"><span class="sw"></span>Industry</button>
+          <button class="chip" data-cat="research"><span class="sw"></span>Research</button>
+          <button class="chip" data-cat="conference"><span class="sw"></span>Conferences</button>
+        </div>
+        <div class="console-note">tap a category to drive straight to its first stop</div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="section-label">The Journey <span class="soft">— cities, neighbourhoods and landmarks</span></div>
+
+<section class="drive3d" id="drive3d">
+  <div class="stage3d" id="stage3d">
+    <canvas id="canvas3d"></canvas>
+    <div class="hud-panel" id="hudPanel" data-cat="education">
+      <div class="hud-top-row">
+        <span class="hud-index" id="hpIndex">STOP 01 / 16</span>
+        <span class="hud-cat" id="hpCat">Education</span>
+      </div>
+      <div class="hud-chapter" id="hpChapter"></div>
+      <div class="hud-date" id="hpDate"></div>
+      <div class="hud-title" id="hpTitle"></div>
+      <div class="hud-org" id="hpOrg"></div>
+      <ul id="hpBullets"></ul>
+      <div class="tags" id="hpTags"></div>
+    </div>
+    <div class="stage-dots" id="stageDots"></div>
+    <div class="stage-progress"><div class="stage-progress-fill" id="stageFill"></div></div>
+    <div class="hierarchy-panel" id="hierarchyPanel">
+      <div class="hierarchy-kicker">City · Education stage</div>
+      <div class="hierarchy-city" id="cityLabel">Hurghada · School</div>
+      <div class="hierarchy-neighborhood" id="neighborhoodLabel">Degree</div>
+    </div>
+    <div class="route-bars">
+      <div class="city-route" id="cityRoute"></div>
+      <div class="neighborhood-route" id="neighborhoodRoute"></div>
+    </div>
+    <div class="stage-hint" id="stageHint">scroll to drive</div>
+    <div class="steer-controls">
+      <button class="steer-btn" id="steerLeft" aria-label="Steer left">◀</button>
+      <button class="steer-btn" id="steerRight" aria-label="Steer right">▶</button>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="section-label">Full Route Log <span class="soft">— text version</span></div>
+  <div class="log-list" id="logList"></div>
+  <div class="empty-state" id="empty">— no matching stops. try clearing the query or a different filter —</div>
+
+  <div class="section-label">Technical Reference</div>
+  <div class="matrix-grid">
+    <div class="matrix-cell"><h4>Coding</h4><p>C++, Python, MATLAB, R, Assembly (microcontrollers), Ladder Logic (PLC), LaTeX</p></div>
+    <div class="matrix-cell"><h4>Simulation / CAD</h4><p>Abaqus, Ansys Fluent, COMSOL, CATIA, Rhino, Simufact, Proteus, VASP, TorchOptics</p></div>
+    <div class="matrix-cell"><h4>Manufacturing</h4><p>CAD/CAM, PowerMill, Fanuc, Heidenhain</p></div>
+    <div class="matrix-cell"><h4>Systems</h4><p>Linux, Docker, distributed computing clusters, PyTorch, NVIDIA Warp</p></div>
+    <div class="matrix-cell"><h4>Languages</h4><p>English, Arabic, German</p></div>
+    <div class="matrix-cell"><h4>Awards</h4><p>High Honors — AUC; Academy of Liberal Arts Award for Undergraduate Research (2021); Most Novel Idea Award — AUC Heart Hackathon (2024)</p></div>
+  </div>
+
+  <footer>
+    <span>YASMIN ABDELAZEIZ · ENGINEERING ROADMAP</span>
+    <span>ROUTE: HURGHADA → CAIRO → DELFT · 2019 — 2026</span>
+  </footer>
+</div>
+
+<script>
+const catLabel = {degree:"Degree", coursework:"Coursework", industry:"Industry", research:"Research", conference:"Conferences"};
+const catColorCss = {degree:"#536f66", coursework:"#6b6475", industry:"#b28a52", research:"#677a70", conference:"#a65f46"};
+
+const CHAPTERS = {
+  school:    { title:"School", subtitle:"Hurghada, Egypt", curbCss:"#b28a52", short:"Hurghada · School" },
+  bachelor: { title:"Bachelor's", subtitle:"Cairo, Egypt", curbCss:"#a65f46", short:"Cairo · Bachelor's" },
+  masters:  { title:"Master's", subtitle:"Delft, Netherlands", curbCss:"#536f66", short:"Delft · Master's" }
+};
+
+const DATA = [
+  {date:"JUL 2019",cat:"degree",chapter:"school",title:"American High School Diploma",org:"Producer of Life International American School — Hurghada, Egypt",bullets:["GPA 4.00 / 4.00 with highest honours for academic achievement."],tags:["High Honours"]},
+  {date:"2017 – 2019",cat:"coursework",chapter:"school",title:"School Coursework",org:"Hurghada, Egypt",bullets:["Environmental science and international business formed the strongest early academic themes."],tags:["Environmental Science","International Business"]},
+
+  {date:"JAN 2025",cat:"degree",chapter:"bachelor",title:"BSc Mechanical Engineering",org:"The American University in Cairo",bullets:["GPA 3.62 / 4.00; High Honours.","Concentrations in design, mechatronics, and materials and manufacturing; minor in Business Administration.","Academy of Liberal Arts Award for Undergraduate Research."],tags:["Mechanical Engineering","AUC"]},
+  {date:"2019 – 2025",cat:"coursework",chapter:"bachelor",title:"Bachelor's Coursework",org:"The American University in Cairo",bullets:["Finite-element analysis, computational mechanics, mechatronics, materials and manufacturing, optimisation, CAD/CAM, and programming.","Graduate-level study in nanoscale material simulation and nanostructured-material characterisation."],tags:["FEA","Optimisation","CAD/CAM","Nanoscale Materials"]},
+  {date:"JUN 2023 – SEP 2023",cat:"industry",chapter:"bachelor",title:"Supply Chain Intern",org:"SC Johnson — Hybrid",bullets:["Built a Python MRP tool combining Excel and SAP data.","Allocated inventory across storage sites using forecast production demand."],tags:["Python","SAP","MRP"]},
+  {date:"JUL 2023 – SEP 2023",cat:"industry",chapter:"bachelor",title:"Engineering Intern — POWER ON",org:"Siemens Energy — Cairo",bullets:["Developed controls for a KUKA additive-manufacturing robot.","Supported nickel-superalloy deposition for gas-turbine component repair."],tags:["KUKA","Robotics","Additive Manufacturing"]},
+  {date:"JUL 2024 – SEP 2024",cat:"industry",chapter:"bachelor",title:"Production Development — ASPIRE",org:"ABB — Cairo",bullets:["Designed facility-layout improvements based on runner products, space utilisation, productivity and project cost."],tags:["Lean","Layout Design"]},
+  {date:"2023 – 2025",cat:"research",chapter:"bachelor",title:"WAAM Rail Fatigue Research",org:"The American University in Cairo",bullets:["Characterised Grade 90A rail steel produced through WAAM and conventional rolling.","Built Abaqus and Fe-Safe fatigue models using a Chaboche plasticity framework."],tags:["Abaqus","Fe-Safe","WAAM","Fatigue"]},
+  {date:"AUG 2024 – PRESENT",cat:"research",chapter:"bachelor",title:"Neural Network Model for Coiled-Tubing Strain",org:"Cairo, Egypt",bullets:["Coupled Abaqus–Fe-Safe simulations with neural networks for root-notch strain prediction.","Studied semi-spherical, conical and cylindrical defects under cyclic loading."],tags:["Neural Networks","Abaqus","Fatigue"]},
+  {date:"NOV 2024",cat:"conference",chapter:"bachelor",flag:"🇯🇵",country:"Japan",title:"30th ISMCS Conference",org:"Utsunomiya, Japan",bullets:["Presented a bio-inspired ventricular-assist device actuated with shape-memory polymers.","Manufactured an SMP prototype using NiCr-PLA and CNT-PLA composites."],tags:["Biomedical","3D Printing","Conference"]},
+  {date:"MAR 2025",cat:"conference",chapter:"bachelor",flag:"🇺🇸",country:"United States",title:"TMS 2025",org:"Las Vegas, United States",bullets:["Presented stress-life estimation of additively repaired rails and the associated WAAM fatigue-modelling workflow."],tags:["WAAM","Fatigue","Conference"]},
+  {date:"SEP 2025 – PRESENT",cat:"degree",chapter:"masters",title:"MSc Mechanical Engineering — High-Tech Engineering",org:"Delft University of Technology",bullets:["Focus on computational design and manufacturing, precision engineering and mechanics."],tags:["TU Delft","High-Tech Engineering"]},
+  {date:"2025 – 2026",cat:"coursework",chapter:"masters",title:"Master's Coursework",org:"Delft University of Technology",bullets:["Computational materials, nonlinear mechanics, mechanical analysis, measurement technology, adaptive optics and AI for physics."],tags:["Computational Mechanics","Adaptive Optics","AI for Physics"]},
+  {date:"AUG 2025 – PRESENT",cat:"research",chapter:"masters",title:"Graphene-Based Gas-Sensor Modelling",org:"ECTM Lab — Delft University of Technology",bullets:["Used VASP and first-principles simulations to investigate adsorption and electronic behaviour of metal-coated graphene for NO₂ and NH₃ sensing."],tags:["VASP","DFT","Graphene"]},
+  {date:"AUG 2025 – DEC 2025",cat:"research",chapter:"masters",title:"GPU-Accelerated FE Solver for Coronary Stents",org:"Edelman Lab, MIT — remote from Delft",bullets:["Built an explicit finite-element solver in NVIDIA Warp for patient-specific coronary-artery expansion.","Implemented hyperelastic and plasticity models and validated against Abaqus."],tags:["NVIDIA Warp","GPU Computing","Biomechanics"]},
+  {date:"JUL 2026 – DEC 2026",cat:"research",chapter:"masters",title:"MSc Research Intern — Diffractive-Digital Neural Networks",org:"SRON Netherlands Institute for Space Research — Leiden",bullets:["Developing PyTorch retrieval models for greenhouse-gas concentrations from SWIR spectra.","Integrating TorchOptics diffractive simulations with digital neural networks for compact remote-sensing instruments."],tags:["PyTorch","TorchOptics","Remote Sensing","Metasurfaces"]}
+];
+
+const N=DATA.length, ROAD_WIDTH=12, TREE_X=8.4, SPACING=38, NEIGHBORHOOD_GAP=30, CITY_GAP=72, FLIGHT_LEN=92;
+const CURVE_POINTS=[{z:25,x:0},{z:-220,x:-2},{z:-470,x:3},{z:-720,x:-3},{z:-980,x:2},{z:-1260,x:0}];
+function smoothstep(t){return t*t*(3-2*t)}
+function xAtZ(z){if(z>=CURVE_POINTS[0].z)return CURVE_POINTS[0].x;if(z<=CURVE_POINTS.at(-1).z)return CURVE_POINTS.at(-1).x;for(let i=0;i<CURVE_POINTS.length-1;i++){const a=CURVE_POINTS[i],b=CURVE_POINTS[i+1];if(z<=a.z&&z>=b.z){const t=smoothstep((a.z-z)/(a.z-b.z));return a.x+(b.x-a.x)*t}}return 0}
+
+const stationZ=new Array(N); let z=0; let prevChapter=null, prevCat=null;
+let flightStart=0, flightEnd=0;
+for(let i=0;i<N;i++){
+  const item=DATA[i];
+  if(prevChapter && item.chapter!==prevChapter){
+    if(prevChapter==='bachelor'&&item.chapter==='masters'){z-=55;flightStart=z;z-=FLIGHT_LEN;flightEnd=z;z-=55;}
+    else z-=CITY_GAP;
+    prevCat=null;
+  } else if(prevCat && item.cat!==prevCat){z-=NEIGHBORHOOD_GAP;}
+  stationZ[i]=z; z-=SPACING; prevChapter=item.chapter; prevCat=item.cat;
+}
+const chapterIndices={school:DATA.map((d,i)=>d.chapter==='school'?i:null).filter(i=>i!==null),bachelor:DATA.map((d,i)=>d.chapter==='bachelor'?i:null).filter(i=>i!==null),masters:DATA.map((d,i)=>d.chapter==='masters'?i:null).filter(i=>i!==null)};
+const roadBounds={}; for(const ch of Object.keys(chapterIndices)){const ids=chapterIndices[ch];roadBounds[ch]={start:stationZ[ids[0]]+24,end:stationZ[ids.at(-1)]-24}}
+const schoolRoadStart=roadBounds.school.start,schoolRoadEnd=roadBounds.school.end,bachelorRoadStart=roadBounds.bachelor.start,bachelorRoadEnd=roadBounds.bachelor.end,mastersRoadStart=roadBounds.masters.start,mastersRoadEnd=roadBounds.masters.end;
+const gateBachelorZ=(schoolRoadEnd+bachelorRoadStart)/2, gateMastersZ=(flightEnd+mastersRoadStart)/2;
+const TOTAL_LENGTH=-(z-30);
+const neighborhoodStarts=[]; DATA.forEach((d,i)=>{if(i===0||d.chapter!==DATA[i-1].chapter||d.cat!==DATA[i-1].cat)neighborhoodStarts.push(i)});
+
+const stationX=DATA.map((item,i)=>xAtZ(stationZ[i]));
+
+/* ================= FALLBACK LOG ================= */
+const logList = document.getElementById('logList');
+const emptyState = document.getElementById('empty');
+const countEl = document.getElementById('count');
+
+function highlight(text, q){
+  if(!q) return text;
+  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  if(idx === -1) return text;
+  return text.slice(0,idx) + '<mark>' + text.slice(idx, idx+q.length) + '</mark>' + text.slice(idx+q.length);
+}
+
+function renderLog(){
+  logList.innerHTML = DATA.map((item,i) => {
+    const bulletsHTML = item.bullets.map(b => '<li>' + b + '</li>').join('');
+    const tagsHTML = item.tags.map(t => '<span class="tag">' + t + '</span>').join('');
+    return `
+    <div class="log-item" data-index="${i}" data-cat="${item.cat}">
+      <div class="log-chapter">${CHAPTERS[item.chapter].title}</div>
+      <div class="log-top">
+        <span class="log-date">${item.date}</span>
+        <span class="tag">${catLabel[item.cat]}</span>
+      </div>
+      <div class="log-title">${item.flag ? `<span class="flag-chip">${item.flag}</span>` : ``}${item.title}</div>
+      <div class="log-org">${item.org}</div>
+      <ul>${bulletsHTML}</ul>
+      <div class="tags">${tagsHTML}</div>
+    </div>`;
+  }).join('');
+}
+renderLog();
+
+/* ================= HUD ================= */
+const hudPanel = document.getElementById('hudPanel');
+const hpIndex = document.getElementById('hpIndex');
+const hpCat = document.getElementById('hpCat');
+const hpChapter = document.getElementById('hpChapter');
+const hpDate = document.getElementById('hpDate');
+const hpTitle = document.getElementById('hpTitle');
+const hpOrg = document.getElementById('hpOrg');
+const hpBullets = document.getElementById('hpBullets');
+const hpTags = document.getElementById('hpTags');
+const stageFill = document.getElementById('stageFill');
+const stageDots = document.getElementById('stageDots');
+const stageHint = document.getElementById('stageHint');
+const hierarchyPanel=document.getElementById('hierarchyPanel');
+const cityLabel=document.getElementById('cityLabel');
+const neighborhoodLabel=document.getElementById('neighborhoodLabel');
+const cityRoute=document.getElementById('cityRoute');
+const neighborhoodRoute=document.getElementById('neighborhoodRoute');
+const drive3d = document.getElementById('drive3d');
+const stage3d = document.getElementById('stage3d');
+
+const PX_PER_UNIT_VH = 1.5;
+drive3d.style.height = Math.max(1200, TOTAL_LENGTH * PX_PER_UNIT_VH) + 'vh';
+
+stageDots.innerHTML = DATA.map((item,i) =>
+  `<button class="stage-dot" data-index="${i}" title="${item.title}" aria-label="Go to ${item.title}"></button>`
+).join('');
+
+cityRoute.innerHTML=['school','bachelor','flight','masters'].map((x,i)=>`<span class="route-node" data-route="${x}">${x==='school'?'Hurghada':x==='bachelor'?'Cairo':x==='flight'?'✈ Flight':'Delft'}</span>${i<3?'<span class="route-sep">━</span>':''}`).join('');
+let currentIndex=-1;
+function updateRoutes(item){
+  cityLabel.textContent=CHAPTERS[item.chapter].short;
+  neighborhoodLabel.textContent=catLabel[item.cat]+' neighbourhood';
+  document.querySelectorAll('[data-route]').forEach(n=>n.classList.toggle('active',n.dataset.route===item.chapter));
+  const cats=[...new Set(DATA.filter(d=>d.chapter===item.chapter).map(d=>d.cat))];
+  neighborhoodRoute.innerHTML=cats.map((c,i)=>`<span class="route-node ${c===item.cat?'active':''}" data-cat-jump="${item.chapter}:${c}">${catLabel[c]}</span>${i<cats.length-1?'<span class="route-sep">↗</span>':''}`).join('');
+}
+function showStation(i,animate){
+  if(i===currentIndex)return; currentIndex=i; const item=DATA[i];
+  function paint(){
+    hudPanel.setAttribute('data-cat',item.cat); hpIndex.textContent='LANDMARK '+String(i+1).padStart(2,'0')+' / '+N;
+    hpCat.textContent=catLabel[item.cat]; hpChapter.textContent=CHAPTERS[item.chapter].title+' · '+CHAPTERS[item.chapter].subtitle;
+    hpDate.textContent=item.date; hpTitle.innerHTML=(item.flag?`<span class="flag-chip">${item.flag}</span>`:'')+item.title;
+    hpOrg.innerHTML=item.org; hpBullets.innerHTML=item.bullets.map(b=>'<li>'+b+'</li>').join(''); hpTags.innerHTML=item.tags.map(t=>'<span class="tag">'+t+'</span>').join('');
+    updateRoutes(item); hudPanel.classList.remove('fade'); stage3d.classList.remove('flight-mode');
+  }
+  if(animate){hudPanel.classList.add('fade');setTimeout(paint,140)}else paint();
+  document.querySelectorAll('.stage-dot').forEach(d=>d.classList.toggle('active',Number(d.dataset.index)===i));
+}
+function showFlight(){
+  currentIndex=-2; stage3d.classList.add('flight-mode'); cityLabel.textContent='Cairo → Delft · Flight'; neighborhoodLabel.textContent=''; neighborhoodRoute.innerHTML='<span class="route-node active">Transition only · no events</span>';
+  document.querySelectorAll('[data-route]').forEach(n=>n.classList.toggle('active',n.dataset.route==='flight')); document.querySelectorAll('.stage-dot').forEach(d=>d.classList.remove('active'));
+}
+showStation(0,false);
+
+/* ================= THREE.JS SCENE ================= */
+let scene, camera, renderer, carGroup, planeGroup, wheelMeshes = [], treeMeshes = [], raycaster, mouse;
+const BG_HEX = 0x071724;
+const GROUND_HEX = 0x718c74;
+const TRUNK_HEX = 0x765744;
+const FOLIAGE = [0x91a889, 0x718c74, 0x536c5b];
+const CAR_BODY = 0xe76f51;
+const CAR_CABIN = 0x172a3a;
+const PLANE_BODY = 0xfcfbf7;
+
+function initScene(){
+  scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x173746, 95, 285);
+
+  camera = new THREE.PerspectiveCamera(52, 1, 0.1, 600);
+
+  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), antialias:true, alpha:true });
+  renderer.setClearColor(BG_HEX, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+
+  scene.add(new THREE.AmbientLight(0xfff6e6, .8));
+  const sun = new THREE.DirectionalLight(0xfff2d8, .9);
+  sun.position.set(40, 70, 30);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024,1024);
+  sun.shadow.camera.left = -90; sun.shadow.camera.right = 90;
+  sun.shadow.camera.top = 90; sun.shadow.camera.bottom = -90;
+  scene.add(sun);
+
+  scene.add(buildStarfield());
+
+  const groundGeo = new THREE.PlaneGeometry(360, TOTAL_LENGTH + 200, 1, 1);
+  const ground = new THREE.Mesh(groundGeo, new THREE.MeshLambertMaterial({ color: GROUND_HEX }));
+  ground.rotation.x = -Math.PI/2;
+  ground.position.set(0, -0.06, -TOTAL_LENGTH/2 + 40);
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  scene.add(buildRoadRibbon(schoolRoadStart, schoolRoadEnd, CHAPTERS.school.curbCss));
+  scene.add(buildRoadRibbon(bachelorRoadStart, bachelorRoadEnd, CHAPTERS.bachelor.curbCss));
+  scene.add(buildRoadRibbon(mastersRoadStart, mastersRoadEnd, CHAPTERS.masters.curbCss));
+
+  scene.add(buildGateSign(gateBachelorZ, CHAPTERS.bachelor.title, CHAPTERS.bachelor.subtitle, CHAPTERS.bachelor.curbCss));
+  scene.add(buildGateSign(gateMastersZ, CHAPTERS.masters.title, CHAPTERS.masters.subtitle, CHAPTERS.masters.curbCss));
+
+  scene.add(buildFlightScene());
+  scene.add(buildChapterLandmarks());
+  scene.add(buildNeighborhoodLandmarks());
+
+  for(let i=0;i<N;i++){
+    const side = i % 2 === 0 ? -1 : 1;
+    const tree = createTree();
+    tree.position.set(stationX[i] + side*TREE_X, 0, stationZ[i]);
+    scene.add(tree);
+    treeMeshes.push({mesh: tree, index: i});
+
+    const label = createNumberSprite(catLabel[DATA[i].cat].slice(0,1), catColorCss[DATA[i].cat]);
+    label.position.set(stationX[i] + side*TREE_X, 5.6, stationZ[i]);
+    scene.add(label);
+  }
+
+  carGroup = buildCar();
+  scene.add(carGroup);
+
+  planeGroup = buildPlane();
+  planeGroup.visible = false;
+  scene.add(planeGroup);
+
+  raycaster = new THREE.Raycaster();
+  mouse = new THREE.Vector2();
+
+  resizeRenderer();
+}
+
+function buildStarfield(){
+  const count=900, positions=new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    const angle=Math.random()*Math.PI*2, radius=85+Math.random()*220;
+    positions[i*3]=Math.cos(angle)*radius;
+    positions[i*3+1]=28+Math.random()*105;
+    positions[i*3+2]=35-Math.random()*(TOTAL_LENGTH+180);
+  }
+  const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  return new THREE.Points(geo,new THREE.PointsMaterial({color:0xe7f3f5,size:.65,transparent:true,opacity:.58,sizeAttenuation:true}));
+}
+
+function buildCountryFlag(country){
+  const group=new THREE.Group();
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.08,.1,6,8),new THREE.MeshStandardMaterial({color:0xd9dfe2,metalness:.35,roughness:.45}));pole.position.y=3;group.add(pole);
+  const c=document.createElement('canvas');c.width=360;c.height=240;const ctx=c.getContext('2d');
+  if(country==='Japan'){ctx.fillStyle='#fff';ctx.fillRect(0,0,360,240);ctx.fillStyle='#bc002d';ctx.beginPath();ctx.arc(180,120,70,0,Math.PI*2);ctx.fill();}
+  else if(country==='United States'){ctx.fillStyle='#fff';ctx.fillRect(0,0,360,240);ctx.fillStyle='#b22234';for(let y=0;y<13;y+=2)ctx.fillRect(0,y*(240/13),360,240/13);ctx.fillStyle='#3c3b6e';ctx.fillRect(0,0,144,129);ctx.fillStyle='#fff';for(let r=0;r<5;r++)for(let col=0;col<6;col++){ctx.beginPath();ctx.arc(12+col*23,12+r*24,3,0,Math.PI*2);ctx.fill();}}
+  else if(country==='Egypt'){ctx.fillStyle='#ce1126';ctx.fillRect(0,0,360,80);ctx.fillStyle='#fff';ctx.fillRect(0,80,360,80);ctx.fillStyle='#000';ctx.fillRect(0,160,360,80);ctx.fillStyle='#c9a227';ctx.fillRect(172,95,16,50);}
+  else {ctx.fillStyle='#ae1c28';ctx.fillRect(0,0,360,80);ctx.fillStyle='#fff';ctx.fillRect(0,80,360,80);ctx.fillStyle='#21468b';ctx.fillRect(0,160,360,80);}
+  const tex=new THREE.CanvasTexture(c);tex.minFilter=THREE.LinearFilter;
+  const flag=new THREE.Mesh(new THREE.PlaneGeometry(3.9,2.5),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));flag.position.set(2,4.7,0);group.add(flag);
+  return group;
+}
+
+function buildRoadRibbon(zStart, zEnd, curbCss){
+  const halfWidth = ROAD_WIDTH/2;
+  const step = 4;
+  const rows = [];
+  let vCoord = 0;
+  for(let zz = zStart; zz >= zEnd; zz -= step){
+    const x = xAtZ(zz);
+    const xNext = xAtZ(zz - 0.6);
+    const xPrev = xAtZ(zz + 0.6);
+    const dx = xNext - xPrev, dz = -1.2;
+    const len = Math.hypot(dx,dz) || 1;
+    const nx = -dz/len, nz = dx/len;
+    rows.push({
+      lx:x+nx*halfWidth, lz:zz+nz*halfWidth,
+      rx:x-nx*halfWidth, rz:zz-nz*halfWidth,
+      v:vCoord
+    });
+    vCoord += step/8;
+  }
+  const positions = [], uvs = [], indices = [];
+  rows.forEach(r => {
+    positions.push(r.lx, 0, r.lz, r.rx, 0, r.rz);
+    uvs.push(0, r.v, 1, r.v);
+  });
+  for(let r=0;r<rows.length-1;r++){
+    const a=r*2, b=r*2+1, c=(r+1)*2, d=(r+1)*2+1;
+    indices.push(a,c,b, b,c,d);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions,3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs,2));
+  geo.setIndex(indices);
+  geo.computeVertexNormals();
+
+  const tex = buildRoadTexture(curbCss);
+  const mat = new THREE.MeshLambertMaterial({ map: tex });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+function buildRoadTexture(curbCss){
+  const c = document.createElement('canvas');
+  c.width = 128; c.height = 512;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#26333d'; ctx.fillRect(0,0,128,512);
+  ctx.fillStyle = curbCss;
+  ctx.fillRect(0,0,9,512);
+  ctx.fillRect(119,0,9,512);
+  ctx.fillStyle = '#fcfbf7';
+  for(let y=0;y<512;y+=64){ ctx.fillRect(59,y,10,34); }
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+function buildGateSign(zPos, title, subtitle, colorCss){
+  const group = new THREE.Group();
+  const postMat = new THREE.MeshStandardMaterial({ color: 0x332b1f, roughness:.7 });
+  const postGeo = new THREE.CylinderGeometry(.35,.35,9,8);
+  const lp = new THREE.Mesh(postGeo, postMat); lp.position.set(-ROAD_WIDTH/2-1.2, 4.5, 0); lp.castShadow = true;
+  const rp = new THREE.Mesh(postGeo, postMat); rp.position.set(ROAD_WIDTH/2+1.2, 4.5, 0); rp.castShadow = true;
+  group.add(lp, rp);
+
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 256;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = colorCss; ctx.fillRect(0,0,1024,256);
+  ctx.fillStyle = '#fcfbf7';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = 'bold 58px "Space Grotesk", sans-serif';
+  ctx.fillText(title.toUpperCase(), 512, 100);
+  ctx.font = '34px "IBM Plex Mono", monospace';
+  ctx.fillText(subtitle, 512, 172);
+  const tex = new THREE.CanvasTexture(c);
+  const board = new THREE.Mesh(new THREE.BoxGeometry(ROAD_WIDTH+2.8, 2.6, .3), new THREE.MeshStandardMaterial({ map: tex }));
+  board.position.set(0, 8.2, 0);
+  board.castShadow = true;
+  group.add(board);
+
+  group.position.set(xAtZ(zPos), 0, zPos);
+  return group;
+}
+
+function buildChapterLandmarks(){
+  const group = new THREE.Group();
+  const navy = new THREE.MeshStandardMaterial({ color:0x172a3a, roughness:.7 });
+  const cream = new THREE.MeshStandardMaterial({ color:0xfcfbf7, roughness:.8 });
+  const coral = new THREE.MeshStandardMaterial({ color:0xe76f51, roughness:.7 });
+  const teal = new THREE.MeshStandardMaterial({ color:0x167d7f, roughness:.7 });
+  const sand = new THREE.MeshStandardMaterial({ color:0xd4a85a, roughness:.8 });
+
+  function addBlock(x,y,z,w,h,d,mat){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; group.add(m); return m;
+  }
+  function addLabel(text, sub, x, y, z){ const sp=createLabelSprite(text,sub); sp.position.set(x,y,z); group.add(sp); }
+
+  const sz=stationZ[0]-8, sx=xAtZ(sz)-11;
+  addBlock(sx,2.2,sz,7,4.4,5,cream); addBlock(sx,4.9,sz,7.8,.7,5.6,sand);
+  addBlock(sx-2.1,1.4,sz+2.55,1.3,2.8,.25,navy); addBlock(sx+1.2,2.2,sz+2.55,2.4,1.4,.2,teal);
+  addLabel('SCHOOL ZONE','HURGHADA',sx,8.0,sz);
+
+  const bz=stationZ[chapterIndices.bachelor[0]]-8, bx=xAtZ(bz)+13;
+  addBlock(bx,2.7,bz,10,5.4,6,cream); addBlock(bx,5.8,bz,10.8,.9,6.7,coral);
+  for(let k=-3;k<=3;k+=2) addBlock(bx+k,2.4,bz+3.1,.65,4.8,.5,navy);
+  addLabel('AUC CAMPUS','CAIRO',bx,9.3,bz);
+
+  const rz=stationZ[DATA.findIndex(d=>d.chapter==='bachelor'&&d.cat==='research')], rx=xAtZ(rz)-14;
+  addBlock(rx,1.7,rz,8,3.4,5,navy); addBlock(rx,3.8,rz,8.7,.6,5.7,teal);
+  for(let k=-2.6;k<=2.6;k+=1.3) addBlock(rx+k,2.0,rz+2.55,.55,1.1,.18,cream);
+  addLabel('RESEARCH DISTRICT','FATIGUE · AI · MATERIALS',rx,7.2,rz);
+
+  const az=flightStart+8, ax=xAtZ(az);
+  addBlock(ax-8,3.2,az,1,6.4,1,navy); addBlock(ax+8,3.2,az,1,6.4,1,navy);
+  addBlock(ax,6.2,az,17,1.1,1,coral); addLabel('CAIRO → DELFT','DEPARTURES',ax,9.5,az);
+
+  const mz=stationZ[chapterIndices.masters[0]]-5, mx=xAtZ(mz)+14;
+  const houseColors=[teal,cream,sand,coral];
+  for(let k=0;k<4;k++){
+    const hx=mx+(k-1.5)*3.1, h=4.5+(k%2)*1.2;
+    addBlock(hx,h/2,mz,2.7,h,4.5,houseColors[k]);
+    const roof=new THREE.Mesh(new THREE.ConeGeometry(2.0,1.5,4),navy); roof.rotation.y=Math.PI/4; roof.position.set(hx,h+.75,mz); roof.castShadow=true; group.add(roof);
+  }
+  addLabel('DELFT','MASTER\'S ROAD',mx,9.2,mz);
+
+  const ez=stationZ[chapterIndices.masters.at(-1)]-6, ex=xAtZ(ez)-13;
+  addBlock(ex,2.4,ez,9,4.8,6,navy); addBlock(ex,5.2,ez,9.8,.8,6.8,teal);
+  const dish=new THREE.Mesh(new THREE.SphereGeometry(2.2,16,8,0,Math.PI*2,0,Math.PI/2),cream);
+  dish.scale.y=.35; dish.rotation.x=-Math.PI/3; dish.position.set(ex,7.0,ez); group.add(dish);
+  addLabel('SRON','REMOTE SENSING',ex,10.5,ez);
+  return group;
+}
+
+function buildNeighborhoodLandmarks(){
+  const group=new THREE.Group();
+  neighborhoodStarts.forEach((i,k)=>{
+    const item=DATA[i], z=stationZ[i]+14, side=k%2===0?-1:1;
+    const label=createLabelSprite(catLabel[item.cat].toUpperCase(),CHAPTERS[item.chapter].subtitle);
+    label.position.set(xAtZ(z)+side*13,5.5,z); label.scale.set(7.5,2.9,1); group.add(label);
+  });
+  DATA.forEach((item,i)=>{if(!item.flag)return; const flag=buildCountryFlag(item.country); flag.position.set(stationX[i]+(i%2?13:-13),0,stationZ[i]); group.add(flag)});
+  return group;
+}
+
+function createLabelSprite(text, sub){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 200;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = 'rgba(51,43,31,0.92)';
+  roundRect(ctx, 8,8,496,184,18); ctx.fill();
+  ctx.fillStyle = '#fcfbf7';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font = 'bold 46px "Space Grotesk", sans-serif';
+  ctx.fillText(text, 256, 80);
+  ctx.font = '28px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#c9572a';
+  ctx.fillText(sub, 256, 132);
+  const tex = new THREE.CanvasTexture(c);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
+  sprite.scale.set(9, 3.5, 1);
+  return sprite;
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+function buildFlightScene(){
+  const group = new THREE.Group();
+  const cloudMat = new THREE.MeshLambertMaterial({ color: 0xfffdf3 });
+  const cloudSpots = [
+    [-14, 16, flightStart-20], [10, 22, flightStart-55], [-6, 26, flightStart-95],
+    [14, 18, flightStart-130], [-16, 24, flightStart-160], [4, 15, flightEnd+15]
+  ];
+  cloudSpots.forEach(p => {
+    const cg = new THREE.Group();
+    for(let k=0;k<4;k++){
+      const s = new THREE.Mesh(new THREE.SphereGeometry(1.6 + Math.random()*1.1, 8, 8), cloudMat);
+      s.position.set((Math.random()-0.5)*3.2, (Math.random()-0.5)*0.8, (Math.random()-0.5)*3.2);
+      s.scale.y = 0.6; cg.add(s);
+    }
+    cg.position.set(p[0], p[1], p[2]); group.add(cg);
+  });
+
+  const arcHeight = 26; const pts = []; const steps = 40;
+  for(let i=0;i<=steps;i++){
+    const t = i/steps; const zz = flightStart + (flightEnd-flightStart)*t;
+    const yy = arcHeight * Math.sin(t*Math.PI) + 2;
+    pts.push(new THREE.Vector3(xAtZ(flightStart)*(1-t) + xAtZ(flightEnd)*t, yy, zz));
+  }
+  const arcGeo = new THREE.BufferGeometry().setFromPoints(pts);
+  const arcLine = new THREE.Line(arcGeo, new THREE.LineDashedMaterial({ color:0xc9572a, dashSize:2, gapSize:1.4, transparent:true, opacity:.55 }));
+  arcLine.computeLineDistances(); group.add(arcLine);
+
+  const cairoLabel = createLabelSprite('CAIRO', 'EGYPT'); cairoLabel.position.set(xAtZ(flightStart), 6, flightStart); group.add(cairoLabel);
+  const delftLabel = createLabelSprite('DELFT', 'NETHERLANDS'); delftLabel.position.set(xAtZ(flightEnd), 6, flightEnd); group.add(delftLabel);
+  const egFlag=buildCountryFlag('Egypt'); egFlag.position.set(xAtZ(flightStart)-8,0,flightStart); group.add(egFlag);
+  const nlFlag=buildCountryFlag('Netherlands'); nlFlag.position.set(xAtZ(flightEnd)+8,0,flightEnd); group.add(nlFlag);
+  return group;
+}
+
+function createNumberSprite(num, colorCss){
+  const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+  const ctx = c.getContext('2d'); ctx.fillStyle = colorCss;
+  ctx.beginPath(); ctx.arc(64,64,58,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#fdf8ee'; ctx.lineWidth = 6; ctx.stroke();
+  ctx.fillStyle = '#fcfbf7'; ctx.font = 'bold 44px "Space Grotesk", sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(num), 64, 68);
+  const tex = new THREE.CanvasTexture(c);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
+  sprite.scale.set(2.2,2.2,1); return sprite;
+}
+
+function createTree(){
+  const group = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(.32,.42,2.0,8), new THREE.MeshLambertMaterial({ color: TRUNK_HEX }));
+  trunk.position.y = 1.0; trunk.castShadow = true; group.add(trunk);
+  const tiers = [ {r:1.9,h:2.6,y:2.6,c:FOLIAGE[0]}, {r:1.5,h:2.2,y:3.9,c:FOLIAGE[1]}, {r:1.05,h:1.8,y:5.0,c:FOLIAGE[2]} ];
+  tiers.forEach(t => {
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(t.r,t.h,8), new THREE.MeshLambertMaterial({ color:t.c }));
+    cone.position.y = t.y; cone.castShadow = true; group.add(cone);
+  });
+  return group;
+}
+
+function buildCar(){
+  const group = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({ color: CAR_BODY, roughness:.35, metalness:.1 });
+  const cabinMat = new THREE.MeshStandardMaterial({ color: CAR_CABIN, roughness:.3, metalness:.15 });
+  const darkMat = new THREE.MeshStandardMaterial({ color: 0x241f18, roughness:.6 });
+
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2.6,.9,4.6), bodyMat);
+  body.position.y = 1.0; body.castShadow = true; group.add(body);
+
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.1,.75,2.4), cabinMat);
+  cabin.position.set(0,1.75,-.2); cabin.castShadow = true; group.add(cabin);
+
+  const nose = new THREE.Mesh(new THREE.BoxGeometry(2.6,.5,.8), darkMat);
+  nose.position.set(0,.55,2.5); group.add(nose);
+
+  const wheelGeo = new THREE.CylinderGeometry(.55,.55,.5,14);
+  [[-1.35,.55,1.55,true],[1.35,.55,1.55,true],[-1.35,.55,-1.55,false],[1.35,.55,-1.55,false]].forEach(p => {
+    const wheel = new THREE.Mesh(wheelGeo, darkMat);
+    wheel.rotation.z = Math.PI/2; wheel.position.set(p[0],p[1],p[2]);
+    wheel.castShadow = true; wheel.userData.front = p[3];
+    group.add(wheel); wheelMeshes.push(wheel);
+  });
+
+  const headlightMat = new THREE.MeshStandardMaterial({ color:0xfff2c9, emissive:0xffdd88, emissiveIntensity:.6 });
+  [[-.9],[.9]].forEach(p => {
+    const hl = new THREE.Mesh(new THREE.BoxGeometry(.4,.25,.1), headlightMat);
+    hl.position.set(p[0],1.0,4.35); group.add(hl);
+  });
+  return group;
+}
+
+function buildPlane(){
+  const group = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({ color: PLANE_BODY, roughness:.4 });
+  const accentMat = new THREE.MeshStandardMaterial({ color: CAR_BODY, roughness:.4 });
+
+  const fuselage = new THREE.Mesh(new THREE.CylinderGeometry(.6,.6,4.4,10), bodyMat);
+  fuselage.rotation.x = Math.PI/2; fuselage.castShadow = true; group.add(fuselage);
+
+  const nose = new THREE.Mesh(new THREE.SphereGeometry(.6,10,10), accentMat);
+  nose.position.set(0,0,2.2); group.add(nose);
+
+  const tailCap = new THREE.Mesh(new THREE.SphereGeometry(.5,8,8), bodyMat);
+  tailCap.position.set(0,0,-2.2); group.add(tailCap);
+
+  const wing = new THREE.Mesh(new THREE.BoxGeometry(7.5,.18,1.4), bodyMat);
+  wing.position.set(0,-.1,.1); wing.castShadow = true; group.add(wing);
+
+  const tailWing = new THREE.Mesh(new THREE.BoxGeometry(2.6,.14,.8), bodyMat);
+  tailWing.position.set(0,0,-2.0); group.add(tailWing);
+
+  const tailFin = new THREE.Mesh(new THREE.BoxGeometry(.14,1.3,1.0), accentMat);
+  tailFin.position.set(0,.75,-2.0); group.add(tailFin);
+
+  const stripe = new THREE.Mesh(new THREE.BoxGeometry(1.25,.05,4.42), accentMat);
+  stripe.position.set(0,.55,0); group.add(stripe);
+
+  group.rotation.y = Math.PI; return group;
+}
+
+function resizeRenderer(){
+  const w = stage3d.clientWidth, h = stage3d.clientHeight;
+  if(w < 5 || h < 5) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resizeRenderer);
+
+/* ---------- scroll-driven progress ---------- */
+function computeProgress(){
+  const rect = drive3d.getBoundingClientRect();
+  const total = rect.height - window.innerHeight;
+  if(total <= 0) return 0;
+  return Math.min(1, Math.max(0, -rect.top / total));
+}
+
+let targetZ = 0;
+function onScrollUpdate(){
+  const progress=computeProgress(); stageFill.style.width=(progress*100).toFixed(1)+'%'; targetZ=-progress*TOTAL_LENGTH;
+  if(targetZ<=flightStart && targetZ>=flightEnd){showFlight();}
+  else {let best=0,dist=Infinity; stationZ.forEach((sz,i)=>{const d=Math.abs(sz-targetZ);if(d<dist){dist=d;best=i}});showStation(best,true);}
+  if(progress>.01)stageHint.classList.add('hidden');else stageHint.classList.remove('hidden');
+}
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if(!ticking){ requestAnimationFrame(() => { onScrollUpdate(); ticking = false; }); ticking = true; }
+}, {passive:true});
+
+/* ---------- jump navigation ---------- */
+function jumpToIndex(i){
+  const top = drive3d.offsetTop;
+  const total = drive3d.offsetHeight - window.innerHeight;
+  const progressAtStation = (-stationZ[i]) / TOTAL_LENGTH;
+  const target = top + Math.max(0, Math.min(1, progressAtStation)) * total;
+  window.scrollTo({top: target, behavior: 'smooth'});
+}
+stageDots.addEventListener('click', (e) => {
+  const btn = e.target.closest('.stage-dot');
+  if(btn) jumpToIndex(Number(btn.dataset.index));
+});
+
+neighborhoodRoute.addEventListener('click',(e)=>{
+  const node=e.target.closest('[data-cat-jump]'); if(!node)return;
+  const [chapter,cat]=node.dataset.catJump.split(':');
+  const idx=DATA.findIndex(d=>d.chapter===chapter&&d.cat===cat);
+  if(idx>=0) jumpToIndex(idx);
+});
+
+/* ---------- click a tree in 3D ---------- */
+document.getElementById('canvas3d').addEventListener('click', (e) => {
+  const rect = stage3d.getBoundingClientRect();
+  mouse.x = ((e.clientX - rect.left)/rect.width)*2 - 1;
+  mouse.y = -((e.clientY - rect.top)/rect.height)*2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = treeMeshes.map(t => t.mesh);
+  const hits = raycaster.intersectObjects(meshes, true);
+  if(hits.length){
+    let obj = hits[0].object;
+    while(obj.parent && !treeMeshes.find(t => t.mesh === obj)) obj = obj.parent;
+    const found = treeMeshes.find(t => t.mesh === obj);
+    if(found) jumpToIndex(found.index);
+  }
+});
+
+/* ---------- steering input ---------- */
+const MAX_STEER = ROAD_WIDTH/2 - 1.6;
+let steerOffset = 0;
+const keys = { left:false, right:false };
+window.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowLeft') keys.left = true;
+  if(e.key === 'ArrowRight') keys.right = true;
+});
+window.addEventListener('keyup', (e) => {
+  if(e.key === 'ArrowLeft') keys.left = false;
+  if(e.key === 'ArrowRight') keys.right = false;
+});
+function bindSteerBtn(id, dir){
+  const btn = document.getElementById(id);
+  const down = (ev) => { ev.preventDefault(); keys[dir] = true; btn.classList.add('pressed'); };
+  const up = () => { keys[dir] = false; btn.classList.remove('pressed'); };
+  btn.addEventListener('pointerdown', down); btn.addEventListener('pointerup', up);
+  btn.addEventListener('pointerleave', up); btn.addEventListener('pointercancel', up);
+}
+bindSteerBtn('steerLeft','left');
+bindSteerBtn('steerRight','right');
+
+/* ---------- render loop ---------- */
+let carZ = 0;
+let wheelSpin = 0;
+function animate(){
+  requestAnimationFrame(animate);
+  const prevZ = carZ;
+  carZ += (targetZ - carZ) * 0.07;
+  const dz = prevZ - carZ;
+  wheelSpin += dz / 0.55;
+  wheelMeshes.forEach(w => { w.rotation.x = wheelSpin; });
+
+  if(keys.left) steerOffset -= 0.11;
+  if(keys.right) steerOffset += 0.11;
+  if(!keys.left && !keys.right) steerOffset *= 0.985;
+  steerOffset = Math.max(-MAX_STEER, Math.min(MAX_STEER, steerOffset));
+
+  const inFlightStart = flightStart, inFlightEnd = flightEnd;
+  const margin = 18;
+  let flightBlend = 0;
+  if(carZ <= inFlightStart && carZ >= inFlightEnd) flightBlend = 1;
+  else if(carZ < inFlightStart + margin && carZ > inFlightStart) flightBlend = 1 - (carZ - inFlightStart)/margin;
+  else if(carZ > inFlightEnd - margin && carZ < inFlightEnd) flightBlend = 1 - (inFlightEnd - carZ)/margin;
+  flightBlend = Math.max(0, Math.min(1, flightBlend));
+
+  const routeX = xAtZ(carZ);
+  const baseX = routeX + steerOffset * (1-flightBlend);
+  carGroup.position.set(baseX, 0, carZ);
+  const bob = Math.sin(carZ*0.35) * 0.03;
+  carGroup.position.y = bob;
+  const roadHeading = Math.atan2(xAtZ(carZ-1)-xAtZ(carZ+1), -2);
+  carGroup.rotation.y = roadHeading;
+  carGroup.rotation.z = -steerOffset*0.05*(1-flightBlend);
+  carGroup.visible = flightBlend < 0.98;
+  carGroup.scale.setScalar(1 - flightBlend);
+
+  if(flightBlend > 0.02){
+    const t = Math.max(0, Math.min(1, (inFlightStart - carZ)/(inFlightStart-inFlightEnd)));
+    const arcHeight = 26;
+    const py = arcHeight*Math.sin(t*Math.PI) + 2;
+    const px = xAtZ(inFlightStart)*(1-t) + xAtZ(inFlightEnd)*t;
+    planeGroup.position.set(px, py, carZ);
+    planeGroup.rotation.x = Math.cos(t*Math.PI) * 0.25;
+    planeGroup.visible = true;
+    planeGroup.scale.setScalar(Math.min(1, flightBlend*1.4));
+  } else {
+    planeGroup.visible = false;
+  }
+
+  const chaseHeight = 5.6 + flightBlend*20;
+  const chaseDist = 11.5 + flightBlend*22;
+  const followX = flightBlend > 0.5 ? planeGroup.position.x : baseX;
+  const desiredCam = new THREE.Vector3(followX, chaseHeight, carZ + chaseDist);
+  camera.position.lerp(desiredCam, 0.08);
+  camera.lookAt(followX*0.4, 1.4 + flightBlend*6, carZ - 10);
+
+  renderer.render(scene, camera);
+}
+
+if(window.THREE){
+  initScene();
+  resizeRenderer();
+  onScrollUpdate();
+  animate();
+}
+
+/* ================= FILTERS ================= */
+let activeCat = 'all';
+let query = '';
+
+function firstMatchIndex(){
+  for(let i=0;i<N;i++){
+    const item = DATA[i];
+    const catMatch = activeCat === 'all' || item.cat === activeCat;
+    const haystack = (item.title + ' ' + item.org + ' ' + item.bullets.join(' ') + ' ' + item.tags.join(' ')).toLowerCase();
+    const textMatch = query.trim() === '' || haystack.includes(query.trim().toLowerCase());
+    if(catMatch && textMatch) return i;
+  }
+  return -1;
+}
+
+function applyFilters(){
+  const q = query.trim().toLowerCase();
+  let visible = 0;
+
+  document.querySelectorAll('.stage-dot').forEach(dot => {
+    const item = DATA[Number(dot.dataset.index)];
+    const catMatch = activeCat === 'all' || item.cat === activeCat;
+    const haystack = (item.title + ' ' + item.org + ' ' + item.bullets.join(' ') + ' ' + item.tags.join(' ')).toLowerCase();
+    const textMatch = q === '' || haystack.includes(q);
+    const match = catMatch && textMatch;
+    dot.classList.toggle('dim', !match);
+    if(match) visible++;
+  });
+
+  document.querySelectorAll('.log-item').forEach(el => {
+    const item = DATA[Number(el.dataset.index)];
+    const catMatch = activeCat === 'all' || item.cat === activeCat;
+    const haystack = (item.title + ' ' + item.org + ' ' + item.bullets.join(' ') + ' ' + item.tags.join(' ')).toLowerCase();
+    const textMatch = q === '' || haystack.includes(q);
+    const match = catMatch && textMatch;
+    el.style.display = match ? '' : 'none';
+    const titleEl = el.querySelector('.log-title');
+    if(titleEl) titleEl.innerHTML = highlight(item.title, q === '' ? '' : query.trim());
+  });
+
+  countEl.textContent = visible + ' / ' + N;
+  emptyState.classList.toggle('show', visible === 0);
+}
+
+document.getElementById('query').addEventListener('input', (e) => {
+  query = e.target.value;
+  applyFilters();
+});
+document.getElementById('query').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){ const i = firstMatchIndex(); if(i >= 0) jumpToIndex(i); }
+});
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeCat = chip.dataset.cat;
+    applyFilters();
+    const i = firstMatchIndex();
+    if(i >= 0) jumpToIndex(i);
+  });
+});
+applyFilters();
+</script>
+
+</body>
+</html>
