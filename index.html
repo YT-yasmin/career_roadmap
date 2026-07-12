@@ -449,7 +449,7 @@ function showFlight(){
 showStation(0,false);
 
 /* ================= THREE.JS SCENE ================= */
-let scene, camera, renderer, carGroup, planeGroup, wheelMeshes = [], treeMeshes = [], raycaster, mouse;
+let scene, camera, renderer, carGroup, bikeGroup, planeGroup, wheelMeshes = [], bikeWheelMeshes = [], treeMeshes = [], raycaster, mouse;
 const BG_HEX = 0x071724;
 const GROUND_HEX = 0x718c74;
 const TRUNK_HEX = 0x765744;
@@ -512,6 +512,10 @@ function initScene(){
 
   carGroup = buildCar();
   scene.add(carGroup);
+
+  bikeGroup = buildBike();
+  bikeGroup.visible = false;
+  scene.add(bikeGroup);
 
   planeGroup = buildPlane();
   planeGroup.visible = false;
@@ -805,6 +809,48 @@ function buildCar(){
   return group;
 }
 
+function buildBike(){
+  const group = new THREE.Group();
+  const frameMat = new THREE.MeshStandardMaterial({ color: CAR_BODY, roughness:.45, metalness:.15 });
+  const darkMat = new THREE.MeshStandardMaterial({ color: 0x241f18, roughness:.7 });
+  const metalMat = new THREE.MeshStandardMaterial({ color: 0xbfc6c9, roughness:.35, metalness:.65 });
+
+  function tube(a,b,r=.09,mat=frameMat){
+    const mid = new THREE.Vector3().addVectors(a,b).multiplyScalar(.5);
+    const len = a.distanceTo(b);
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,10),mat);
+    mesh.position.copy(mid);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), new THREE.Vector3().subVectors(b,a).normalize());
+    mesh.castShadow = true; group.add(mesh); return mesh;
+  }
+
+  const wheelGeo = new THREE.TorusGeometry(.82,.09,10,28);
+  [-1.35,1.35].forEach(z => {
+    const wheel = new THREE.Mesh(wheelGeo,darkMat);
+    wheel.rotation.y = Math.PI/2;
+    wheel.position.set(0,.9,z);
+    wheel.castShadow = true; group.add(wheel); bikeWheelMeshes.push(wheel);
+  });
+
+  const rear = new THREE.Vector3(0,.9,-1.35);
+  const front = new THREE.Vector3(0,.9,1.35);
+  const crank = new THREE.Vector3(0,1.0,-.05);
+  const seat = new THREE.Vector3(0,1.95,-.55);
+  const head = new THREE.Vector3(0,1.85,.72);
+  tube(rear,crank); tube(crank,front); tube(crank,seat); tube(seat,head); tube(head,crank);
+  tube(head,front,.075,metalMat);
+  tube(seat,new THREE.Vector3(0,2.28,-.68),.07,metalMat);
+  const saddle = new THREE.Mesh(new THREE.BoxGeometry(.38,.12,.52),darkMat);
+  saddle.position.set(0,2.34,-.72); saddle.castShadow=true; group.add(saddle);
+  tube(head,new THREE.Vector3(0,2.28,.88),.07,metalMat);
+  tube(new THREE.Vector3(-.42,2.28,.88),new THREE.Vector3(.42,2.28,.88),.055,metalMat);
+  const pedal = new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,.08,14),metalMat);
+  pedal.rotation.z=Math.PI/2; pedal.position.copy(crank); group.add(pedal);
+
+  group.scale.setScalar(1.15);
+  return group;
+}
+
 function buildPlane(){
   const group = new THREE.Group();
   const bodyMat = new THREE.MeshStandardMaterial({ color: PLANE_BODY, roughness:.4 });
@@ -930,6 +976,7 @@ function animate(){
   const dz = prevZ - carZ;
   wheelSpin += dz / 0.55;
   wheelMeshes.forEach(w => { w.rotation.x = wheelSpin; });
+  bikeWheelMeshes.forEach(w => { w.rotation.x = wheelSpin; });
 
   if(keys.left) steerOffset -= 0.11;
   if(keys.right) steerOffset += 0.11;
@@ -946,14 +993,22 @@ function animate(){
 
   const routeX = xAtZ(carZ);
   const baseX = routeX + steerOffset * (1-flightBlend);
-  carGroup.position.set(baseX, 0, carZ);
   const bob = Math.sin(carZ*0.35) * 0.03;
-  carGroup.position.y = bob;
   const roadHeading = Math.atan2(xAtZ(carZ-1)-xAtZ(carZ+1), -2);
+  const beforeFlight = carZ > inFlightStart;
+  const afterFlight = carZ < inFlightEnd;
+
+  carGroup.position.set(baseX, bob, carZ);
   carGroup.rotation.y = roadHeading;
   carGroup.rotation.z = -steerOffset*0.05*(1-flightBlend);
-  carGroup.visible = flightBlend < 0.98;
+  carGroup.visible = beforeFlight && flightBlend < 0.98;
   carGroup.scale.setScalar(1 - flightBlend);
+
+  bikeGroup.position.set(baseX, bob, carZ);
+  bikeGroup.rotation.y = roadHeading;
+  bikeGroup.rotation.z = -steerOffset*0.035*(1-flightBlend);
+  bikeGroup.visible = afterFlight && flightBlend < 0.98;
+  bikeGroup.scale.setScalar(1 - flightBlend);
 
   if(flightBlend > 0.02){
     const t = Math.max(0, Math.min(1, (inFlightStart - carZ)/(inFlightStart-inFlightEnd)));
